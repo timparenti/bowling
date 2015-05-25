@@ -6,6 +6,34 @@ pre {
   font-size: 80%;
 }
 
+table.match tr, table.match td, table.match th {
+  margin: 0;
+  padding: 0;
+}
+.match .frameNum {
+  font-size: 85%;
+}
+
+.game:nth-child(even) {
+  background: #fafafa;
+}
+.game:nth-child(odd) {
+  background: #fdfdfd;
+}
+.game:hover {
+  background: #ddf;
+}
+.game .player {
+  font-weight: bold;
+  text-align: left;
+  padding-right: 0.5em;
+}
+.game .total {
+  font-weight: bold;
+  text-align: right;
+  padding-left: 0.5em;
+}
+
 .frame {
   width: 4em;
   height: 2.5em;

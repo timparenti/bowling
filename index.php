@@ -11,9 +11,9 @@
   echo "<hr>";
   echo $outing;
   echo "<hr>";
-  echo $outing->match(2);
+  echo $outing->match(2)->prettyPrint();
   echo "<hr>";
-  echo $outing->match(2)->game(3);
+  echo $outing->match(2)->game(3)->prettyPrint();
   echo "<hr>";
   echo $outing->match(1)->game(1)->frame(1)->prettyPrint();
   echo $outing->match(1)->game(1)->frame(4)->prettyPrint();
@@ -76,6 +76,21 @@
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
     }
+    public function prettyPrint() {
+      $r = "<table class=\"match\">";
+      $r .= "<tr>";
+      $r .= "<th></th>";
+      for ($i = 1; $i <= 10; $i++) {
+        $r .= "<th class=\"frameNum\">".$i."</th>";
+      }
+      $r .= "<th></th>";
+      $r .= "</tr>";
+      foreach ($this->games as $game) {
+        $r .= $game->prettyPrint();
+      }
+      $r .= "</table>";
+      return $r;
+    }
   }
 
   class Game {
@@ -104,6 +119,16 @@
     
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
+    }
+    public function prettyPrint() {
+      $r = "<tr class=\"game\">";
+      $r .= "<th class=\"player\">".$this->player."</th>";
+      foreach ($this->frames as $frame) {
+        $r .= "<td>".$frame->prettyPrint()."</td>";
+      }
+      $r .= "<th class=\"total\"></th>";
+      $r .= "</tr>";
+      return $r;
     }
   }
 

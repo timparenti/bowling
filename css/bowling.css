@@ -6,7 +6,26 @@ pre {
   font-size: 80%;
 }
 
+.frame {
+  width: 4em;
+  height: 2.5em;
+  border: 0.1em solid #000;
+}
+.frame .balls {
+  float: right;
+  height: 1em;
+  width: 2.3em;
+  padding: 0.05em 0;
+  border-left: 0.1em solid #000;
+  border-bottom: 0.1em solid #000;
+  background-color: #eee;
+}
+.frame10 .balls {
+  width: 3.4em !important;
+}
+
 .ball {
+  display: inline-block;
   height: 1em;
   width: 1em;
   margin: 0 0.05em;

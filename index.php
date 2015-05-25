@@ -15,7 +15,12 @@
   echo "<hr>";
   echo $outing->match(2)->game(3);
   echo "<hr>";
-  echo $outing->match(2)->game(3)->frame(5);
+  echo $outing->match(1)->game(1)->frame(1)->prettyPrint();
+  echo $outing->match(1)->game(1)->frame(4)->prettyPrint();
+  echo $outing->match(2)->game(3)->frame(5)->prettyPrint();
+  echo $outing->match(2)->game(3)->frame(10)->prettyPrint();
+  echo $outing->match(2)->game(4)->frame(10)->prettyPrint();
+  echo $outing->match(3)->game(2)->frame(10)->prettyPrint();
   echo "<hr>";
   echo $outing->match(2)->game(3)->frame(5)->ball(1)->prettyPrint();
   echo $outing->match(2)->game(3)->frame(5)->ball(2)->prettyPrint();
@@ -125,6 +130,21 @@
 
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
+    }
+    public function prettyPrint() {
+      if ($this->frameNum == 10) {
+        $r = "<div class=\"frame frame10\">";
+      }
+      else {
+        $r = "<div class=\"frame\">";
+      }
+      $r .= "<div class=\"balls\">";
+      foreach ($this->balls as $ball) {
+        $r .= $ball->prettyPrint();
+      }
+      $r .= "</div>";
+      $r .= "</div>";
+      return $r;
     }
   }
 

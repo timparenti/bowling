@@ -1,5 +1,30 @@
+body {
+  font-size: 12pt;
+}
 pre {
   font-family: Consolas, Courier New, Courier, monospace;
   font-size: 80%;
 }
 
+.ball {
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em;
+  text-align: center;
+  vertical-align: middle;
+}
+.split {
+  border-radius: 50%;
+  border: 0.1em solid #333;
+  width: 0.9em !important;
+}
+.spare {
+  background-image: url("../img/spare.svg");
+  background-size: 100% 100%;
+  color: rgba(0,0,0,0);
+}
+.strike {
+  background-image: url("../img/strike.svg");
+  background-size: 100% 100%;
+  color: rgba(0,0,0,0);
+}

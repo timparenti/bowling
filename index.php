@@ -17,8 +17,11 @@
   echo "<hr>";
   echo $outing->match(2)->game(3)->frame(5);
   echo "<hr>";
-  echo $outing->match(2)->game(3)->frame(5)->ball(1);
-  echo $outing->match(2)->game(3)->frame(5)->ball(2);
+  echo $outing->match(2)->game(3)->frame(5)->ball(1)->prettyPrint();
+  echo $outing->match(2)->game(3)->frame(5)->ball(2)->prettyPrint();
+  echo $outing->match(4)->game(3)->frame(1)->ball(1)->prettyPrint();
+  echo $outing->match(4)->game(3)->frame(5)->ball(1)->prettyPrint();
+  echo $outing->match(4)->game(3)->frame(5)->ball(2)->prettyPrint();
   echo "<hr>";
 
 
@@ -132,8 +135,32 @@
       $this->raw = $ball;
     }
 
+    public function value() {
+      return substr($this->raw, 0, 1);
+    }
+
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
+    }
+    public function prettyPrint() {
+      $value = $this->value();
+      if (substr($this->raw, -1) == 's') {
+        return "<div class=\"ball split\" alt=\"".$value." split\">".$value."</div>";
+      }
+      switch ($value) {
+        case "-":
+          return "<div class=\"ball gutter\" alt=\"Gutter\">&ndash;</div>";
+          break;
+        case "/":
+          return "<div class=\"ball spare\" alt=\"Spare\">/</div>";
+          break;
+        case "X":
+          return "<div class=\"ball strike\" alt=\"Strike\">X</div>";
+          break;
+        default:
+          return "<div class=\"ball\" alt=\"".$value."\">".$value."</div>";
+          break;
+      }
     }
   }
 ?>

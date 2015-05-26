@@ -4,6 +4,7 @@
   <link rel=stylesheet href="css/bowling.css">
 </head>
 <body>
+
 <?php
   $outing = new Outing("data/2015-05-22.txt");
   echo $outing->prettyPrint();
@@ -37,10 +38,13 @@
     public function prettyPrint() {
       $r = "<h1 class=\"filename\">".$this->filename."</h1>";
       foreach ($this->matches as $matchNum => $match) {
-        $r .= "<hr>";
-        $r .= "<h2 class=\"matchNum\">Game ".$matchNum."</h2>";
+        $r .= "\n\n<!-- ------------------------- GAME ".$matchNum." ------------------------- -->";
+        $r .= "\n\n<hr>";
+        $r .= "\n<h2 class=\"matchNum\">Game ".$matchNum."</h2>";
         $r .= $match->prettyPrint();
       }
+      $r .= "\n\n<!-- ------------------------- END ------------------------- -->";
+      $r .= "\n\n<hr>";
       return $r;
     }
   }
@@ -68,18 +72,18 @@
       return "<pre>".($this->raw)."</pre>";
     }
     public function prettyPrint() {
-      $r = "<table class=\"match\">";
-      $r .= "<tr>";
+      $r = "\n\n<table class=\"match\">";
+      $r .= "\n<tr class=\"frameNum\">";
       $r .= "<th></th>";
       for ($i = 1; $i <= 10; $i++) {
-        $r .= "<th class=\"frameNum\">".$i."</th>";
+        $r .= "<th>".$i."</th>";
       }
       $r .= "<th></th>";
       $r .= "</tr>";
       foreach ($this->games as $game) {
         $r .= $game->prettyPrint();
       }
-      $r .= "</table>";
+      $r .= "\n\n</table>";
       return $r;
     }
   }
@@ -112,13 +116,13 @@
       return "<pre>".($this->raw)."</pre>";
     }
     public function prettyPrint() {
-      $r = "<tr class=\"game\">";
-      $r .= "<th class=\"player\">".$this->player."</th>";
+      $r = "\n\n<tr class=\"game\">";
+      $r .= "\n<th class=\"player\">".$this->player."</th>";
       foreach ($this->frames as $frame) {
-        $r .= "<td>".$frame->prettyPrint()."</td>";
+        $r .= "\n<td>".$frame->prettyPrint()."</td>";
       }
-      $r .= "<th class=\"total\"></th>";
-      $r .= "</tr>";
+      $r .= "\n<th class=\"total\"></th>";
+      $r .= "\n</tr>";
       return $r;
     }
   }
@@ -200,5 +204,7 @@
     }
   }
 ?>
+
+
 </body>
 </html>

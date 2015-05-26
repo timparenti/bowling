@@ -6,35 +6,17 @@
 <body>
 <?php
   $outing = new Outing("data/2015-05-22.txt");
+  echo $outing->prettyPrint();
 
-  // DEBUGGING OUTPUT
-  echo "<hr>";
-  echo $outing;
-  echo "<hr>";
-  echo $outing->match(2)->prettyPrint();
-  echo "<hr>";
-  echo $outing->match(2)->game(3)->prettyPrint();
-  echo "<hr>";
-  echo $outing->match(1)->game(1)->frame(1)->prettyPrint();
-  echo $outing->match(1)->game(1)->frame(4)->prettyPrint();
-  echo $outing->match(2)->game(3)->frame(5)->prettyPrint();
-  echo $outing->match(2)->game(3)->frame(10)->prettyPrint();
-  echo $outing->match(2)->game(4)->frame(10)->prettyPrint();
-  echo $outing->match(3)->game(2)->frame(10)->prettyPrint();
-  echo "<hr>";
-  echo $outing->match(2)->game(3)->frame(5)->ball(1)->prettyPrint();
-  echo $outing->match(2)->game(3)->frame(5)->ball(2)->prettyPrint();
-  echo $outing->match(4)->game(3)->frame(1)->ball(1)->prettyPrint();
-  echo $outing->match(4)->game(3)->frame(5)->ball(1)->prettyPrint();
-  echo $outing->match(4)->game(3)->frame(5)->ball(2)->prettyPrint();
-  echo "<hr>";
 
 
   class Outing {
+    private $filename;
     private $raw;
     private $matches = array();
 
     public function __construct($file) {
+      $this->filename = $file;
       $this->raw = file_get_contents($file);
 
       // Split into matches
@@ -51,6 +33,15 @@
 
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
+    }
+    public function prettyPrint() {
+      $r = "<h1 class=\"filename\">".$this->filename."</h1>";
+      foreach ($this->matches as $matchNum => $match) {
+        $r .= "<hr>";
+        $r .= "<h2 class=\"matchNum\">Game ".$matchNum."</h2>";
+        $r .= $match->prettyPrint();
+      }
+      return $r;
     }
   }
 

@@ -6,6 +6,17 @@ pre {
   font-size: 80%;
 }
 
+h1.filename {
+  font-family: Consolas, Courier New, Courier, monospace;
+  font-size: 140%;
+  margin: 0.5em 0;
+}
+
+h2.matchNum {
+  font-size: 120%;
+  margin: 0.5em 0 0.2em 0;
+}
+
 table.match tr, table.match td, table.match th {
   margin: 0;
   padding: 0;

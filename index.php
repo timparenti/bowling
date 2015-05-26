@@ -6,19 +6,43 @@
 <body>
 
 <?php
-  $outing = new Outing("data/2015-05-22.txt");
-  echo $outing->prettyPrint();
+
+  $dir = "data";
+
+  if (!isset($_GET['f'])) {
+    $files = scandir($dir);
+    echo "<h1>Bowling Scores</h1>";
+    echo "\n\n<ul>";
+    foreach ($files as $file) {
+      if(preg_match("/\d{4}-\d{2}-\d{2}/", $file, $matches)) {
+        echo "\n<li><a href=\"?f=".$matches[0]."\">".$matches[0]."</a></li>";
+      }
+    }
+    echo "\n</ul>";
+  }
+  else {
+    $date = $_GET['f'];
+
+    $outing = new Outing($dir."/".$date.".txt", $date);
+    echo $outing->prettyPrint();
+  }
 
 
 
   class Outing {
     private $filename;
+    private $date;
     private $raw;
     private $matches = array();
 
-    public function __construct($file) {
+    public function __construct($file, $date) {
       $this->filename = $file;
-      $this->raw = file_get_contents($file);
+      $this->date = $date;
+      $this->raw = @file_get_contents($file);
+      if ($this->raw == FALSE) {
+        echo "<div class=\"error\"><b>Error:</b> No such file.</div>";
+        exit();
+      }
 
       // Split into matches
       $matches = preg_split("/\n\n/", $this->raw);
@@ -38,7 +62,9 @@
       return "<pre>".($this->raw)."</pre>";
     }
     public function prettyPrint() {
-      $r = "<h1 class=\"filename\">".$this->filename."</h1>";
+      $r = "<h1 class=\"date\">".$this->date."</h1>";
+      $r .= "\n\n<a href=\"./\">&laquo; Back</a> | ";
+      $r .= "<a href=\"".$this->filename."\" target=\"_blank\">Raw</a>";
       foreach ($this->matches as $matchNum => $match) {
         $r .= "\n\n<!-- ------------------------- GAME ".$matchNum." ------------------------- -->";
         $r .= "\n\n<hr>";

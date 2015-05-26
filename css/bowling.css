@@ -6,9 +6,16 @@ pre {
   font-size: 80%;
 }
 
-h1.filename {
-  font-family: Consolas, Courier New, Courier, monospace;
-  font-size: 140%;
+.error {
+  margin: 2em;
+  padding: 0.5em;
+  color: #933;
+  background: #fdd;
+  border: 1px solid #f66;
+}
+
+h1 {
+  font-size: 160%;
   margin: 0.5em 0;
 }
 

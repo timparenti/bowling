@@ -24,7 +24,9 @@
       $matches = preg_split("/\n\n/", $this->raw);
       $matchNum = 1;
       foreach ($matches as $match) {
-        $this->matches[$matchNum++] = new Match($match);
+        if ($match != '') {
+          $this->matches[$matchNum++] = new Match($match);
+        }
       }
     }
 
@@ -60,7 +62,9 @@
       $games = preg_split("/\n/", $this->raw);
       $gameNum = 1;
       foreach ($games as $game) {
-        $this->games[$gameNum++] = new Game($game);
+        if ($game != '') {
+          $this->games[$gameNum++] = new Game($game);
+        }
       }
     }
 

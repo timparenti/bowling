@@ -97,6 +97,10 @@
     private $player;
     private $frames = array();
 
+    private $frameScores = array();
+    private $cumulativeScores = array();
+    private $gameScore;
+
     public function __construct($game) {
       $this->raw = $game;
 
@@ -107,6 +111,17 @@
       foreach ($frames as $frameNum => $frame) {
         $this->frames[$frameNum] = new Frame($frameNum, $frame);
       }
+
+      // Score each frame, and sum them
+      $total = 0;
+      foreach ($this->frames as $frameNum => $frame) {
+        $frameScore = $this->scoreFrame($frameNum);
+
+        $this->frameScores[$frameNum] = $frameScore;
+        $total += $frameScore;
+        $this->cumulativeScores[$frameNum] = $total;
+      }
+      $this->gameScore = $this->cumulativeScores[10];
     }
 
     public function player() {
@@ -115,6 +130,92 @@
     public function frame($i) {
       return $this->frames[$i];
     }
+
+    public function scoreFrame($frameNum) {
+      $frameResult = $this->frame($frameNum)->result();
+
+      switch ($frameResult) {
+        case '0':
+          return 0;
+          break;
+        case 'X':
+          return $this->scoreStrike($frameNum);
+          break;
+        case '/':
+          return $this->scoreSpare($frameNum);
+          break;
+        default:
+          return $frameResult;
+          break;
+      }
+    }
+
+    private function scoreSpare($frameNum) {
+      if ($frameNum != 10) {
+        $nextBall1 = $this->frame($frameNum+1)->ball(1)->value();
+      }
+      else {
+        $nextBall1 = $this->frame(10)->ball(3)->value();
+      }
+
+      $pins = 0;
+      switch ($nextBall1) {
+        case 'X':
+          $pins = 10;
+          break;
+        case '-':
+          $pins = 0;
+          break;
+        default:
+          $pins = $nextBall1;
+          break;
+      }
+      return 10 + $pins;
+    }
+
+    private function scoreStrike($frameNum) {
+      if ($frameNum != 10) {
+        $nextBall1 = $this->frame($frameNum+1)->ball(1)->value();
+        if ($this->frame($frameNum+1)->countBalls() >= 2) {
+          $nextBall2 = $this->frame($frameNum+1)->ball(2)->value();
+        }
+        else {
+          $nextBall2 = $this->frame($frameNum+2)->ball(1)->value();
+        }
+      }
+      else {
+        $nextBall1 = $this->frame(10)->ball(2)->value();
+        $nextBall2 = $this->frame(10)->ball(3)->value();
+      }
+
+      $pins = 0;
+      switch ($nextBall1) {
+        case 'X':
+          $pins = 10;
+          break;
+        case '-':
+          $pins = 0;
+          break;
+        default:
+          $pins = $nextBall1;
+          break;
+      }
+      switch ($nextBall2) {
+        case 'X':
+          $pins += 10;
+          break;
+        case '/':
+          $pins = 10;  // Total is 10 if second balls makes a spare
+          break;
+        case '-':
+          $pins += 0;
+          break;
+        default:
+          $pins += $nextBall2;
+          break;
+      }
+      return 10 + $pins;
+    }
     
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
@@ -122,10 +223,10 @@
     public function prettyPrint() {
       $r = "\n\n<tr class=\"game\">";
       $r .= "\n<th class=\"player\">".$this->player."</th>";
-      foreach ($this->frames as $frame) {
-        $r .= "\n".$frame->prettyPrint();
+      foreach ($this->frames as $frameNum => $frame) {
+        $r .= "\n".$frame->prettyPrint($this->frameScores[$frameNum], $this->cumulativeScores[$frameNum]);
       }
-      $r .= "\n<th class=\"total\"></th>";
+      $r .= "\n<th class=\"total\">".$this->gameScore."</th>";
       $r .= "\n</tr>";
       return $r;
     }
@@ -152,16 +253,36 @@
       return $this->balls[$i];
     }
 
+    public function countBalls() {
+      return count($this->balls);
+    }
+    public function result() {
+      foreach ($this->balls as $ballNum => $ball) {
+        $value = $this->ball($ballNum)->value();
+
+        // If ball was strike or spare, that is the result of the frame
+        if ($value == 'X' || $value == '/') {
+          return $value;
+        }
+        if ($value == '-') {
+          $value = 0;
+        }
+        $ballValue[$ballNum] = $value;
+      }
+      return array_sum($ballValue);
+    }
+
     public function __toString() {
       return "<pre>".($this->raw)."</pre>";
     }
-    public function prettyPrint() {
+    public function prettyPrint($frameScore, $cumulativeScore) {
       $r = "<td class=\"frame frame".$this->frameNum."\">";
       $r .= "<div class=\"balls\">";
       foreach ($this->balls as $ball) {
         $r .= $ball->prettyPrint();
       }
       $r .= "</div>";
+      $r .= "<div class=\"score\">".$cumulativeScore."</div>";
       $r .= "</td>";
       return $r;
     }

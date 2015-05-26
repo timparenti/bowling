@@ -42,6 +42,7 @@ table.match tr, table.match td, table.match th {
 .game .total {
   font-weight: bold;
   text-align: right;
+  width: 1.8em;
   padding-left: 0.5em;
 }
 
@@ -62,6 +63,11 @@ table.match tr, table.match td, table.match th {
 }
 .frame10 .balls {
   width: 3.4em !important;
+}
+.frame .score {
+  clear: both;
+  text-align: center;
+  font-weight: bold;
 }
 
 .ball {

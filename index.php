@@ -119,7 +119,7 @@
       $r = "\n\n<tr class=\"game\">";
       $r .= "\n<th class=\"player\">".$this->player."</th>";
       foreach ($this->frames as $frame) {
-        $r .= "\n<td>".$frame->prettyPrint()."</td>";
+        $r .= "\n".$frame->prettyPrint();
       }
       $r .= "\n<th class=\"total\"></th>";
       $r .= "\n</tr>";
@@ -152,18 +152,13 @@
       return "<pre>".($this->raw)."</pre>";
     }
     public function prettyPrint() {
-      if ($this->frameNum == 10) {
-        $r = "<div class=\"frame frame10\">";
-      }
-      else {
-        $r = "<div class=\"frame\">";
-      }
+      $r = "<td class=\"frame frame".$this->frameNum."\">";
       $r .= "<div class=\"balls\">";
       foreach ($this->balls as $ball) {
         $r .= $ball->prettyPrint();
       }
       $r .= "</div>";
-      $r .= "</div>";
+      $r .= "</td>";
       return $r;
     }
   }

@@ -49,6 +49,7 @@ table.match tr, table.match td, table.match th {
   width: 4em;
   height: 2.5em;
   border: 0.1em solid #000;
+  vertical-align: top;
 }
 .frame .balls {
   float: right;
